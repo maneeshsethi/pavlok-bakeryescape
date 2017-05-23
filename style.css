@@ -1,4 +1,9 @@
 /* See this fiddle for scaling details http://jsfiddle.net/namuol/VAXrL/1459/ */
+@font-face {
+	font-family: ledFont;
+	src: url(../fonts/ledfont.tff);
+}
+
 #canvas-container {
 	text-align: center;
 }

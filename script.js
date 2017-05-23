@@ -8,6 +8,7 @@ var DEFAULT_SPRITE_HEIGHT = 20;
 var PLAY_SPRITE_SIZE = 40;
 var FIELD_HEIGHT = 170;
 var FIELD_WIDTH = 160;
+var PIPE_WIDTH = 35;
 
 var MODULE_COLLISION_MAP = {
 	"player1": {
@@ -69,6 +70,7 @@ var x;
 var y;
 var aY;
 var moduleSpriteIndex;
+var pipes;
 
 var onStartScreen = true;
 var onPlayScreen = false;
@@ -82,10 +84,77 @@ function queueJump(){
 	lastEventY = y;
 }
 
+function rand(){
+	return (Math.random() - 0.5) * 2;
+}
+
+function buildPipe(){
+	var center = (FIELD_HEIGHT / 2) + (rand() * 35); //Centered from  50-120 
+	var height = 65 + (rand() * 15); //50-80 pixels of space
+	
+	//"units" specifies what should be rendered in terms of:
+	// {
+	//	"sy": pixels to sample vertically from image,
+	// 	"y": start y for unit,
+	//	"height": height for unit
+	// }
+	//	everything else about the drawing is obvious
+	
+	var units = [];
+	
+	//Top part of pipe; this is actually quite easy
+	for(var i = center - (height / 2) - 35; i > -35; i -= 35){
+		var sy = 35;
+		var y = i;
+		var height = 35;
+		
+		units.push({ 
+			"sy": sy,
+			"y": i,
+			"height": height
+		});
+	}
+	
+	//Bottom part of pipe; this gets weird when we're drawing the cut-off donut at bottom
+	for(var i = center + (height / 2); i < 170; i += 35){
+		if(i > 135){
+			var sy = FIELD_HEIGHT - i;
+			var y = i;
+			var height = FIELD_HEIGHT - i;
+			
+			units.push({ 
+				"sy": sy,
+				"y": i,
+				"height": height
+			});
+		} else {
+			var sy = 35;
+			var y = i;
+			var height = 35;
+			
+			units.push({ 
+				"sy": sy,
+				"y": i,
+				"height": height
+			});
+		}
+	}
+	
+	var x = FIELD_WIDTH;
+	return {
+		"center": center,
+		"height": height,
+		"x": x,
+		"asset": "donut_1",
+		"units": units,
+		"scored": false
+	};
+}
+
 function step(){
 	//(1) Handle any new input
 	if(pendingMouseEvent){
-		console.log("Processing pending mouse event...");
+		//console.log("Processing pending mouse event...");
 		
 		if(lastMouseEventDown){ //Pending event is a MOUSE_DOWN
 			if(onPlayScreen){
@@ -108,7 +177,6 @@ function step(){
 		x += X_MOVEMENT;
 		var accelCmp = (ACCEL * (deltaT * deltaT));
 		y = lastEventY + (Y_INST_VELOCITY * deltaT) + accelCmp;
-		console.log("inst. accel " + accelCmp);
 		
 		//Realtime bitmap rotation is for chumps
 		if(accelCmp < 70){
@@ -121,11 +189,91 @@ function step(){
 			moduleSpriteIndex = 4;
 		}
 		
-		console.log("@" + deltaT + ": " + x + ", " + y);
+		//console.log("@" + deltaT + ": " + x + ", " + y);
+	
+		//(2) Update pipes
+		if(x > 100){ //We don't care about pipes until we're a little in
+			if(pipes.length < 2){ //Spawn first two pipes
+				var pipe1 = buildPipe();
+				var pipe2 = buildPipe();
+				pipe2.x += (FIELD_WIDTH / 2) + PIPE_WIDTH;
+				pipes.push(pipe1);
+				pipes.push(pipe2);
+			} else { //Update pipes
+				for(var i = 0; i < pipes.length; i++){
+					pipes[i].x -= X_MOVEMENT; //same plane as module
+					
+					if(pipes[i].x < -PIPE_WIDTH){ //i.e. offscreen
+						pipes.splice(0, 1);
+						pipes.push(buildPipe());
+						pipes[1].x = FIELD_WIDTH + PIPE_WIDTH;
+					}
+				}
+			}
+		}
 		
-		//(2) Calculate collisions using expected module sprite
+		var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
+		var cUnits = [];
 		
-		//(3) If we just got through a pipe, update score
+		cUnits.push({
+			"x": (CANVAS_WIDTH / 4) - (moduleInfo.width / 2) + moduleInfo.p1.x,
+			"y": y + moduleInfo.p1.y
+		});
+		cUnits.push({
+			"x": (CANVAS_WIDTH / 4) - (moduleInfo.width / 2) + moduleInfo.p2.x,
+			"y": y + moduleInfo.p2.y
+		});
+		
+		//(3) Calculate collisions using expected module sprite
+		for(var i = 0; i < cUnits.length; i++){
+			var colPoint = cUnits[i];
+		
+		
+			//(a) Pipe collisions
+			for(var j = 0; j < pipes.length; j++){
+				var pipe = pipes[j];
+				
+				var topTop = 0;
+				var topBottom = pipe.center - (pipe.height / 2);
+				var topLeft = pipe.x;
+				var topRight = pipe.x + PIPE_WIDTH;
+				
+				//console.log(topTop + " " + topBottom + " " + topLeft + " " + topRight); 	
+				
+				var bottomTop = pipe.center + (pipe.height / 2);
+				var bottomBottom = 170;
+				
+				//console.log(bottomTop + " " + bottomBottom);
+				
+				if(colPoint.x >= topLeft && colPoint.x <= topRight){
+					//Top pipe
+					console.log(colPoint.x);
+					console.log(topLeft + " " + topRight);
+					
+					console.log("in valid x zone");
+					
+					if(colPoint.y >= topTop && colPoint.y <= topBottom){
+					//	endGame();
+					} else if(colPoint.y >= bottomTop && colPoint.y <= bottomBottom){ //Bottom pipe
+						endGame();
+					}
+				}
+			}
+			
+			//(b) Ground/ceiling collisions
+			if(colPoint.y < 0 || colPoint.y > 170){
+				endGame();
+			}
+		}
+				
+		//(4) If we just got through a pipe, update score
+		for(var i = 0; i < pipes.length; i++){
+			var pipe = pipes[i];
+			if(!pipe.scored && (((CANVAS_WIDTH / 4) + moduleInfo.p1.x) > (pipe.x + (PIPE_WIDTH / 2)))){
+				score += 1;
+				pipe.scored = true;
+			}
+		}
 	}
 	
 	
@@ -155,17 +303,77 @@ function render(){
 		canvasCtx.drawImage(assetMap["background"], 0, 0);
 		
 		//(2) Draw moving tiles
+		//TODO
 		
 		//(3) Draw "pipes"
+		for(var i = 0; i < pipes.length; i++){
+			var pipe = pipes[i];
+			var units = pipe.units;
+			var asset = assetMap[pipe.asset];
+			
+			for(var j = 0; j < units.length; j++){
+				var unit = units[j];
+				//canvasCtx.drawImage(asset, pipe.x, unit.y, PIPE_WIDTH, unit.height);
+				canvasCtx.drawImage(asset, 0, 0, 35, unit.height, pipe.x, unit.y, PIPE_WIDTH, unit.height);
+			}
+		}
 		
 		//(4) Draw player
 		var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
 		var moduleSprite = assetMap["player" + moduleSpriteIndex];
 		canvasCtx.drawImage(moduleSprite, (CANVAS_WIDTH / 4) - (moduleInfo.width / 2), y);
 		
+		var cUnits = [];
+		
+		cUnits.push({
+			"x": (CANVAS_WIDTH / 4) -(moduleInfo.width / 2) + moduleInfo.p1.x,
+			"y": y + moduleInfo.p1.y
+		});
+		cUnits.push({
+			"x": (CANVAS_WIDTH / 4)- (moduleInfo.width / 2) + moduleInfo.p2.x,
+			"y": y + moduleInfo.p2.y
+		});
+		
+		for(var i = 0; i < cUnits.length; i++){
+			var cUnit = cUnits[i];
+			canvasCtx.fillRect(cUnit.x, cUnit.y, 2, 2);
+		}
+		
+		for(var j = 0; j < pipes.length; j++){
+			var pipe = pipes[j];
+			
+			var topTop = 0;
+			var topBottom = pipe.center - (pipe.height / 2);
+			var topLeft = pipe.x;
+			var topRight = pipe.x + PIPE_WIDTH;
+			
+			canvasCtx.fillRect(topLeft, topTop, 2, 2);
+			canvasCtx.fillRect(topLeft, topBottom, 2, 2);
+			canvasCtx.fillRect(topRight, topTop, 2, 2);
+			canvasCtx.fillRect(topRight, topBottom, 2, 2);
+
+			
+			//console.log(topTop + " " + topBottom + " " + topLeft + " " + topRight); 	
+			
+			var bottomTop = pipe.center + (pipe.height / 2);
+			var bottomBottom = 170;
+			
+			canvasCtx.fillRect(topLeft, bottomTop, 2, 2);
+			canvasCtx.fillRect(topLeft, bottomBottom, 2, 2);
+			canvasCtx.fillRect(topRight, bottomTop, 2, 2);
+			canvasCtx.fillRect(topRight, bottomBottom, 2, 2);
+			
+			//console.log(bottomTop + " " + bottomBottom);
+			
+			
+		}
+		
+		
 		//(5) Draw scoreboard
+		canvasCtx.drawImage(assetMap["scoreboard"], (FIELD_WIDTH / 2) - 15, 5);
 		
 		//(6) Draw score
+		canvasCtx.fillText(score + "", (FIELD_WIDTH / 2), 29);
 	}
 	
 	if(onGameOverScreen){
@@ -182,20 +390,33 @@ function startGame(){
 	x = (FIELD_WIDTH / 2) - (DEFAULT_SPRITE_WIDTH / 2);
 	y = (FIELD_HEIGHT /2 ) - (DEFAULT_SPRITE_HEIGHT / 2); 
 	lastEventY = y;
+	pipes = [];
 	
 	onStartScreen = false;
 	onPlayScreen = true;
 	onGameOverScreen = false;
 }
 
+function endGame(){
+	console.log("Game over!");
+	
+	onStartScreen = false;
+	onPlayScreen = false;
+	onGameOverScreen = true;
+}
+
 var canvas;
 var canvasCtx;
-var assetList = [ "title", "background", "play", "player1", "player2", "player3", "player4" ];
+var assetList = [ "title", "scoreboard", "background", "play", "player1", 
+	"player2", "player3", "player4", "donut_1" ];
 var assetMap = {}; //String -> element
 
 function loadAssets(){
 	canvas = $("#cv").get(0);
 	canvasCtx = canvas.getContext("2d");
+	canvasCtx.font = "18px ledFont";
+	canvasCtx.fillStyle = "red";
+	canvasCtx.textAlign = "center";
 	for(var i = 0; i < assetList.length; i++){
 		var el = $("#asset_" + assetList[i]).get(0);
 		if(el !== undefined){
@@ -216,11 +437,11 @@ $(document).ready(function(){
 	canvas.onmousedown = function(){
 		pendingMouseEvent = true;
 		lastMouseEventDown = true;
-		console.log("onMouseDown");
+		//console.log("onMouseDown");
 	};
 	canvas.onmouseup = function(){
 		pendingMouseEvent = true;
 		lastMouseEventDown = false;
-		console.log("onMouseUp");
+		//console.log("onMouseUp");
 	};
 });
