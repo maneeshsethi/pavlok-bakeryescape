@@ -388,8 +388,8 @@ function render(){
 				mY += 2;
 				break;
 				case 3:
-				mX -= 6;
-				mY -= 7;
+				mX -= 1;
+				mY -= 6;
 				break;
 				case 4:
 				mX += 5;
@@ -399,9 +399,9 @@ function render(){
 			
 			canvasCtx.drawImage(trailSprite, mX, mY);
 			canvasCtx.drawImage(moduleSprite, moduleX, moduleY);
-		} else { //We're on the "game over screen", so draw a chubby Pavlok instead
+		} else { //We're on the "game over screen", so draw a chubby Pavlok on the counter instead
 			var chubbySprite = assetMap["chubby_pavlok"];
-			canvasCtx.drawImage(chubbySprite, Math.floor(cPX - 17), Math.floor(cPY - 23));
+			canvasCtx.drawImage(chubbySprite, 35, 138);
 		}
 		
 		//(5) Draw scoreboard
