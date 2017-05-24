@@ -69,6 +69,8 @@ var appStartTime;
 var x;
 var y;
 var aY;
+var cPX;
+var cPY;
 var moduleSpriteIndex;
 var pipes;
 
@@ -195,12 +197,7 @@ function step(){
 		if(x > 100){ //We don't care about pipes until we're a little in
 			if(pipes.length < 2){ //Spawn first two pipes
 				var pipe1 = buildPipe();
-				
-				console.log("build with height of " + pipe1.height);
-
-				
 				var pipe2 = buildPipe();
-				
 				
 				pipe2.x += (FIELD_WIDTH / 2) + PIPE_WIDTH;
 				pipes.push(pipe1);
@@ -249,8 +246,12 @@ function step(){
 								
 				if(colPoint.x >= topLeft && colPoint.x <= topRight){
 					if(colPoint.y >= topTop && colPoint.y <= topBottom){
+						cPX = colPoint.x;
+						cPY = colPoint.y;
 						endGame();
 					} else if(colPoint.y >= bottomTop && colPoint.y <= bottomBottom){ //Bottom pipe
+						cPX = colPoint.x;
+						cPY = colPoint.y;
 						endGame();
 					}
 				}
@@ -258,6 +259,8 @@ function step(){
 			
 			//(b) Ground/ceiling collisions
 			if(colPoint.y < 0 || colPoint.y > 170){
+				cPX = colPoint.x;
+				cPY = colPoint.y;
 				endGame();
 			}
 		}
@@ -292,7 +295,7 @@ function render(){
 		canvasCtx.drawImage(assetMap["play"], (CANVAS_WIDTH / 2) - (outWidth / 2), (CANVAS_HEIGHT / 2) - (outHeight / 2), outWidth, outHeight);
 	}
 	
-	if(onPlayScreen){
+	if(onPlayScreen || onGameOverScreen){
 		canvasCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		
 		//(1) Draw background
@@ -341,14 +344,19 @@ function render(){
 			
 			for(var j = 0; j < units.length; j++){
 				var unit = units[j];
-				canvasCtx.drawImage(asset, 0, 0, 35, unit.height, pipe.x, unit.y, PIPE_WIDTH, unit.height);
+				canvasCtx.drawImage(asset, 0, 0, 35, Math.floor(unit.height), Math.floor(pipe.x), Math.floor(unit.y), PIPE_WIDTH, Math.floor(unit.height));
 			}
 		}
 		
 		//(4) Draw player
-		var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
-		var moduleSprite = assetMap["player" + moduleSpriteIndex];
-		canvasCtx.drawImage(moduleSprite, (CANVAS_WIDTH / 4) - (moduleInfo.width / 2), y);
+		if(onPlayScreen){
+			var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
+			var moduleSprite = assetMap["player" + moduleSpriteIndex];
+			canvasCtx.drawImage(moduleSprite, Math.floor((CANVAS_WIDTH / 4) - (moduleInfo.width / 2)), Math.floor(y));
+		} else { //We're on the "game over screen", so draw a chubby Pavlok instead
+			var chubbySprite = assetMap["chubby_pavlok"];
+			canvasCtx.drawImage(chubbySprite, Math.floor(cPX - 17), Math.floor(cPY - 23));
+		}
 		
 		//(5) Draw scoreboard
 		canvasCtx.drawImage(assetMap["scoreboard"], (FIELD_WIDTH / 2) - 15, 5);
@@ -358,7 +366,12 @@ function render(){
 	}
 	
 	if(onGameOverScreen){
-		//TODO
+		var restartScaleFactor = Math.sin((new Date() - appStartTime) / 200);
+		
+		//Scales from 30-50px
+		var outWidth = PLAY_SPRITE_SIZE + (restartScaleFactor * 10);
+		var outHeight = PLAY_SPRITE_SIZE + (restartScaleFactor * 10); 
+		canvasCtx.drawImage(assetMap["restart"], (CANVAS_WIDTH / 2) - (outWidth / 2), (CANVAS_HEIGHT / 2) - (outHeight / 2), outWidth, outHeight);
 	}
 }
 
@@ -390,7 +403,8 @@ var canvas;
 var canvasCtx;
 var assetList = [ "title", "scoreboard", "background", "play", "player1", 
 				  "player2", "player3", "player4", "donut_1", "restart", 
-				  "tiles", "donut_shelf", "cake_shelf", "case_overlay" ];
+				  "tiles", "donut_shelf", "cake_shelf", "case_overlay",
+				  "chubby_pavlok" ];
 var assetMap = {}; //String -> element
 
 function loadAssets(){
