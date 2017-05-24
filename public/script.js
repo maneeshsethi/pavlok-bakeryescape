@@ -442,16 +442,26 @@ $(document).ready(function(){
 	setInterval(step, 1000 / 60);
 	
 	if ('ontouchstart' in window){
-		canvas.touchstart = function(){
+		canvas.ontouchstart = function(){
 			pendingMouseEvent = true;
 			lastMouseEventDown = true;
 			console.log("onPointerDown");
 		};
-		canvas.touchend = function(){
+		canvas.ontouchend = function(){
 			pendingMouseEvent = true;
 			lastMouseEventDown = false;
 			console.log("onPointerUp");
 		}
+		canvas.onmousedown = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = true;
+			console.log("onMouseDown");
+		};
+		canvas.onmouseup = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = false;
+			console.log("onMouseUp");
+		};
 	} else if (window.PointerEvent) {
 		canvas.onpointerdown = function(){
 			pendingMouseEvent = true;
