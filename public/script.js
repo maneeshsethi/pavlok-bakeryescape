@@ -440,16 +440,31 @@ $(document).ready(function(){
 	loadAssets();
 	
 	setInterval(step, 1000 / 60);
-	canvas.onmousedown = function(){
-		pendingMouseEvent = true;
-		lastMouseEventDown = true;
-		console.log("onMouseDown");
-	};
-	canvas.onmouseup = function(){
-		pendingMouseEvent = true;
-		lastMouseEventDown = false;
-		console.log("onMouseUp");
-	};
+	
+	if (window.PointerEvent) {
+		canvas.onpointerdown = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = true;
+			console.log("onPointerDown");
+		};
+		canvas.onpointerup = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = false;
+			console.log("onPointerUp");
+		}
+	} else {
+		canvas.onmousedown = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = true;
+			console.log("onMouseDown");
+		};
+		canvas.onmouseup = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = false;
+			console.log("onMouseUp");
+		};
+	}
+	
 	
 	//Hide/show depending on whether there's valid stuff
 	//Could be done in Nunjucks, but I forgot how
