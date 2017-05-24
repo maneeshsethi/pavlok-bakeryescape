@@ -84,6 +84,8 @@ var lastMouseEventDown = false;
 function queueJump(){
 	lastEventTime = new Date();
 	lastEventY = y;
+	
+	console.log("Queued jump; lastEventY = " + lastEventY);
 }
 
 function rand(){
