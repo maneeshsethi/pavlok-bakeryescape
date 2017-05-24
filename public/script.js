@@ -448,7 +448,7 @@ function setupButtons(easy, normal, hard){
 	if(normal)
 		X_MOVEMENT = 0.85;
 	if(hard)
-		X_MOVEMENT = 1;
+		X_MOVEMENT = 1.10;
 }
 
 var spaceDown = false;
@@ -536,6 +536,7 @@ $(document).ready(function(){
 
 		pendingMouseEvent = true;
 		lastMouseEventDown = true;
+		spaceDown = true;
 		console.log("onSpaceDown");
 	});
 	$(document).keyup(function(e){
