@@ -1,5 +1,5 @@
 var pavlok = {};
-pavlok.generic = function(route, percent){
+pavlok.generic = function(route, percent, msg){
 	//Fetch auth code
 	var authCode = pavCtx.code;
 	var intensity = Math.floor(percent * 2.55);
@@ -13,18 +13,18 @@ pavlok.generic = function(route, percent){
 		"method": "POST"
 	})
 	.done(function(message){
-		$("#result").append("<div>" + route.substring(0, 1).toUpperCase() + route.substring(1) + " delivered successfully.</div>");
+		console.log("sent stimuli: " + message);
 	})
 	.fail(function(xhr, status, error){	
-		$("#result").append("<div>Failed to send " + route + "!</div>");
+		console.log("failed to send stimuli!");
 	});
 };
-pavlok.beep = function(percent){
-	pavlok.generic("beep", percent);
+pavlok.beep = function(percent, msg){
+	pavlok.generic("beep", percent, msg);
 };
-pavlok.zap = function(percent){
-	pavlok.generic("zap", percent);
+pavlok.zap = function(percent, msg){
+	pavlok.generic("zap", percent, msg);
 };
-pavlok.vibrate = function(percent){
-	pavlok.generic("vibration", percent);
+pavlok.vibrate = function(percent, msg){
+	pavlok.generic("vibration", percent, msg);
 };
