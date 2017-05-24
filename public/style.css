@@ -9,7 +9,7 @@
 }
 
 #login-container {
-	margin-top: 1em;
+	margin-top: 0.2rem;
 	font-size: 1.5em;
 	color: white;
 	text-align: center;
@@ -28,7 +28,7 @@ canvas, img {
     image-rendering: optimize-contrast;
     image-rendering: pixelated;
     -ms-interpolation-mode: nearest-neighbor;
-    border: 4px solid #fff;
+    border: 2px solid #888;
 }
 
 img.asset {

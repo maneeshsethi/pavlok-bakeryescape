@@ -278,6 +278,8 @@ function step(){
 				
 				if(score % 5 == 0){
 					if(pavCtx.code != "none") pavlok.vibrate(60, "Keep up the good playing!");
+				} else if (score == 1){
+					if(pavCtx.code != "none") pavlok.vibrate(60, "Nice start ;)");
 				}
 			}
 		}
