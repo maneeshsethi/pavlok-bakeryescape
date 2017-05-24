@@ -48,7 +48,11 @@ app.use(function(req, res, next){
 			function(error, rows){
 				if(error || rows.length < 1){
 					console.log("Session fetch error from SID!");
-					next(); //We can manually auth if we need to later
+					if(req.url == "/login"){
+						pavlok.auth(req, res); //Begin an authentication process
+					} else {
+						next(); //We can manually auth if we need to later
+					}
 				} else {
 					console.log("Fetched user: " + rows[0].uid);
 					req.pavuser = { //We populate the 'pavuser' object
