@@ -440,4 +440,12 @@ $(document).ready(function(){
 		lastMouseEventDown = false;
 		//console.log("onMouseUp");
 	};
+	
+	//Hide/show depending on whether there's valid stuff
+	//Could be done in Nunjucks, but I forgot how
+	if(pavCtx.code == "none"){
+		//TODO: Show "login" button
+	} else {
+		//TODO: Show you're all set text
+	}
 });

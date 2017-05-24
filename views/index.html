@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pavlok Presents: Bakery Escape</title>
+		
+		<!-- Custom CS/Javascript -->
+		<link rel="stylesheet" href="/style.css">
+				
+		<!-- jQuery -->
+		<script src="/jquery.js"></script> 
+		
+		<!-- Zap zap lib -->
+		<script src="/lib.js"></script>
+		
+		<!-- Auth code, if we're signed in -->
+		<script type="text/javascript">
+		var pavCtx = {
+			code: "{{ code }}"
+		};
+		</script>
+		
+		<link rel="stylesheet" type="text/css" href="/style.css">
+	</head>
+	<body>
+		<div id="canvas-container">
+			<canvas width="160" height="240" id="cv">
+				Your browser doesn't support Canvas for games :(
+			</canvas>
+		</div>
+		
+		<script src="/script.js"></script>
+		
+		<!-- Game assets -->
+		<img class="asset" src="/assets/title.png" id="asset_title" />
+		<img class="asset" src="/assets/background.png" id="asset_background" />
+		<img class="asset" src="/assets/play.png" id="asset_play" />
+		<img class="asset" src="/assets/restart.png" id="asset_restart" />
+		<img class="asset" src="/assets/tiles.png" id="asset_tiles" />
+		<img class="asset" src="/assets/donut_shelf.png" id="asset_donut_shelf" />
+		<img class="asset" src="/assets/cake_shelf.png" id="asset_cake_shelf" />
+		<img class="asset" src="/assets/case_overlay.png" id="asset_case_overlay" />
+		
+		<img class="asset" src="/assets/module_sprite_1.png" id="asset_player1" />
+		<img class="asset" src="/assets/module_sprite_2.png" id="asset_player2" />
+		<img class="asset" src="/assets/module_sprite_3.png" id="asset_player3" />
+		<img class="asset" src="/assets/module_sprite_4.png" id="asset_player4" />
+		<img class="asset" src="/assets/fat_pavlok.png" id="asset_chubby_pavlok" />
+		
+		<img class="asset" src="/assets/pipe_v_1.png" id="asset_donut_1" />
+		<img class="asset" src="/assets/pipe_v_2.png" id="asset_donut_2" />
+		<img class="asset" src="/assets/pipe_v_3.png" id="asset_donut_3" />
+		<img class="asset" src="/assets/now_serving.png" id="asset_scoreboard" />
+	</body>
+</html>
