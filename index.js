@@ -85,7 +85,7 @@ pg.connect(process.env.DATABASE_URL, function(err, cli){
 //Create a session and drop the required cookies
 function establishSession(req, res, meResponse){
 	var sid = uuid.v4();
-	setupQuery("DELETE FROM Sessions WHERE uid=$1",
+	setupQuery("DELETE FROM Session WHERE uid=$1",
 		[meResponse.uid],
 		function(error, rows){
 			if(error){
