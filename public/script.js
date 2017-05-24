@@ -67,6 +67,7 @@ var score;
 var lastEventY;
 var lastEventTime;
 var gameStartTime;
+var gameEndTime;
 var appStartTime;
 var x;
 var y;
@@ -381,12 +382,25 @@ function render(){
 	}
 	
 	if(onGameOverScreen){
-		var restartScaleFactor = Math.sin((new Date() - appStartTime) / 200);
-		
-		//Scales from 30-50px
-		var outWidth = PLAY_SPRITE_SIZE + (restartScaleFactor * 10);
-		var outHeight = PLAY_SPRITE_SIZE + (restartScaleFactor * 10); 
-		canvasCtx.drawImage(assetMap["restart"], (CANVAS_WIDTH / 2) - (outWidth / 2), (CANVAS_HEIGHT / 2) - (outHeight / 2), outWidth, outHeight);
+		var timeSinceDeath = (gameEndTime - new Date()) / 1000;
+		if(timeSinceDeath < 3F){ //Draw flash (yes, this is overdraw; whatevs)
+			var useBlack = Math.sin(timeSinceDeath * 30) > 0; //Display ~15 flashes in the time
+			if(useBlack){
+				canvasCtx.fillStyle = "black";
+			} else {
+				canvasCtx.fillStyle = "white";
+			}
+			canvasCtx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			canvasCtx.drawImage(assetMap["game_over"], (CANVAS_WIDTH / 2) - (CANVAS_WIDTH / 4), (CANVAS_HEIGHT / 2) - (CANVAS_HEIGHT / 4));
+			canvasCtx.fillStyle = "red";
+		} else { //Show restart button
+			var restartScaleFactor = Math.sin((new Date() - appStartTime) / 200);
+			
+			//Scales from 30-50px
+			var outWidth = PLAY_SPRITE_SIZE + (restartScaleFactor * 10);
+			var outHeight = PLAY_SPRITE_SIZE + (restartScaleFactor * 10); 
+			canvasCtx.drawImage(assetMap["restart"], (CANVAS_WIDTH / 2) - (outWidth / 2), (CANVAS_HEIGHT / 2) - (outHeight / 2), outWidth, outHeight);
+		}
 	}
 }
 
@@ -414,6 +428,7 @@ function endGame(){
 	onStartScreen = false;
 	onPlayScreen = false;
 	onGameOverScreen = true;
+	gameEndTime = new Date();
 }
 
 var canvas;
@@ -421,7 +436,7 @@ var canvasCtx;
 var assetList = [ "title", "scoreboard", "background", "play", "player1", 
 				  "player2", "player3", "player4", "donut_1", "donut_2", "donut_3",
 				  "restart", "tiles", "donut_shelf", "cake_shelf", "case_overlay",
-				  "chubby_pavlok" ];
+				  "chubby_pavlok", "game_over" ];
 var assetMap = {}; //String -> element
 
 function loadAssets(){
@@ -430,6 +445,7 @@ function loadAssets(){
 	canvasCtx.font = "16px Orbitron";
 	canvasCtx.fillStyle = "red";
 	canvasCtx.textAlign = "center";
+	
 	for(var i = 0; i < assetList.length; i++){
 		var el = $("#asset_" + assetList[i]).get(0);
 		if(el !== undefined){
