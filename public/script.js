@@ -444,8 +444,8 @@ $(document).ready(function(){
 	//Hide/show depending on whether there's valid stuff
 	//Could be done in Nunjucks, but I forgot how
 	if(pavCtx.code == "none"){
-		//TODO: Show "login" button
+		$("#logged-in").hide();
 	} else {
-		//TODO: Show you're all set text
+		$("#login").hide();
 	}
 });
