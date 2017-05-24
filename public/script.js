@@ -441,7 +441,18 @@ $(document).ready(function(){
 	
 	setInterval(step, 1000 / 60);
 	
-	if (window.PointerEvent) {
+	if ('ontouchstart' in window){
+		canvas.touchstart = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = true;
+			console.log("onPointerDown");
+		};
+		canvas.touchend = function(){
+			pendingMouseEvent = true;
+			lastMouseEventDown = false;
+			console.log("onPointerUp");
+		}
+	} else if (window.PointerEvent) {
 		canvas.onpointerdown = function(){
 			pendingMouseEvent = true;
 			lastMouseEventDown = true;
