@@ -4,6 +4,7 @@
     text-align: center;
     font-size: 1.5em;
 	font-family: monospace;
+	color: white;
 }
 
 #canvas-container {
@@ -17,6 +18,22 @@
 	font-family: sans-serif;
 	margin-right: 1em;
     margin-left: 1em;
+}
+
+#login {
+	display: block;
+    margin: 0 auto;
+    padding: 0.2em;
+    background: yellow;
+    max-width: 200px;
+    text-align: center;
+    color: black;
+    border-radius: 0.5em;
+}
+
+#login a {
+	text-decoration: none;
+    color: black;
 }
 
 #cv {
