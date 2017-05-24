@@ -147,7 +147,7 @@ function buildPipe(){
 		"center": center,
 		"height": pipeHeight,
 		"x": x,
-		"asset": "donut_1",
+		"asset": "donut_" + (Math.floor(Math.random() * 3) + 1),
 		"units": units,
 		"scored": false
 	};
@@ -341,7 +341,7 @@ function render(){
 			var pipe = pipes[i];
 			var units = pipe.units;
 			var asset = assetMap[pipe.asset];
-			
+						
 			for(var j = 0; j < units.length; j++){
 				var unit = units[j];
 				canvasCtx.drawImage(asset, 0, 0, 35, Math.floor(unit.height), Math.floor(pipe.x), Math.floor(unit.y), PIPE_WIDTH, Math.floor(unit.height));
@@ -402,8 +402,8 @@ function endGame(){
 var canvas;
 var canvasCtx;
 var assetList = [ "title", "scoreboard", "background", "play", "player1", 
-				  "player2", "player3", "player4", "donut_1", "restart", 
-				  "tiles", "donut_shelf", "cake_shelf", "case_overlay",
+				  "player2", "player3", "player4", "donut_1", "donut_2", "donut_3",
+				  "restart", "tiles", "donut_shelf", "cake_shelf", "case_overlay",
 				  "chubby_pavlok" ];
 var assetMap = {}; //String -> element
 
