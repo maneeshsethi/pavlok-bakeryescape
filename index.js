@@ -40,7 +40,7 @@ app.use(function(req, res, next){
 	//Perform user lookup for the / route and the /context.js route to let 
 	//these routes populate themselves as needed with user information, or redirect
 	//to a proper page
-   	if((req.session.sid === undefined || req.session.sid == null){ //Fine
+   	if(req.session.sid === undefined || req.session.sid == null){ //Fine
 		next();
 	} else {
 		setupQuery("SELECT * FROM Session s INNER JOIN Users u ON u.uid=s.uid WHERE session_id=$1",
