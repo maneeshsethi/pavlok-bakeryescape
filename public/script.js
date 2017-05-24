@@ -451,6 +451,7 @@ function setupButtons(easy, normal, hard){
 		X_MOVEMENT = 1;
 }
 
+var spaceDown = false;
 $(document).ready(function(){
 	console.log("onReady!");
 	
@@ -525,5 +526,25 @@ $(document).ready(function(){
 	});
 	$("#hard-btn").click(function(){
 		setupButtons(false, false, true);
+	});
+	
+	//Space to jump
+	$(document).keydown(function(e){
+		if(e.which != 32) return; //space
+		e.preventDefault(); //don't scroll/click w/ space
+		if(spaceDown) return;
+
+		pendingMouseEvent = true;
+		lastMouseEventDown = true;
+		console.log("onSpaceDown");
+	});
+	$(document).keyup(function(e){
+		if(e.which != 32) return;
+		e.preventDefault();
+		spaceDown = false;
+		
+		pendingMouseEvent = true;
+		lastMouseEventDown = false;
+		console.log("onSpaceUp");
 	});
 });
