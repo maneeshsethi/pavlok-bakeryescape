@@ -90,8 +90,8 @@ function rand(){
 
 function buildPipe(){
 	var center = (FIELD_HEIGHT / 2) + (rand() * 35); //Centered from  50-120 
-	var height = 65 + (rand() * 15); //50-80 pixels of space
-	
+	var pipeHeight = 65 + (rand() * 15); //50-80 pixels of space
+		
 	//"units" specifies what should be rendered in terms of:
 	// {
 	//	"sy": pixels to sample vertically from image,
@@ -103,7 +103,7 @@ function buildPipe(){
 	var units = [];
 	
 	//Top part of pipe; this is actually quite easy
-	for(var i = center - (height / 2) - 35; i > -35; i -= 35){
+	for(var i = center - (pipeHeight / 2) - 35; i > -35; i -= 35){
 		var sy = 35;
 		var y = i;
 		var height = 35;
@@ -116,7 +116,7 @@ function buildPipe(){
 	}
 	
 	//Bottom part of pipe; this gets weird when we're drawing the cut-off donut at bottom
-	for(var i = center + (height / 2); i < 170; i += 35){
+	for(var i = center + (pipeHeight / 2); i < 170; i += 35){
 		if(i > 135){
 			var sy = FIELD_HEIGHT - i;
 			var y = i;
@@ -143,7 +143,7 @@ function buildPipe(){
 	var x = FIELD_WIDTH;
 	return {
 		"center": center,
-		"height": height,
+		"height": pipeHeight,
 		"x": x,
 		"asset": "donut_1",
 		"units": units,
@@ -195,7 +195,13 @@ function step(){
 		if(x > 100){ //We don't care about pipes until we're a little in
 			if(pipes.length < 2){ //Spawn first two pipes
 				var pipe1 = buildPipe();
+				
+				console.log("build with height of " + pipe1.height);
+
+				
 				var pipe2 = buildPipe();
+				
+				
 				pipe2.x += (FIELD_WIDTH / 2) + PIPE_WIDTH;
 				pipes.push(pipe1);
 				pipes.push(pipe2);
@@ -237,23 +243,13 @@ function step(){
 				var topBottom = pipe.center - (pipe.height / 2);
 				var topLeft = pipe.x;
 				var topRight = pipe.x + PIPE_WIDTH;
-				
-				//console.log(topTop + " " + topBottom + " " + topLeft + " " + topRight); 	
-				
+								
 				var bottomTop = pipe.center + (pipe.height / 2);
 				var bottomBottom = 170;
-				
-				//console.log(bottomTop + " " + bottomBottom);
-				
+								
 				if(colPoint.x >= topLeft && colPoint.x <= topRight){
-					//Top pipe
-					console.log(colPoint.x);
-					console.log(topLeft + " " + topRight);
-					
-					console.log("in valid x zone");
-					
 					if(colPoint.y >= topTop && colPoint.y <= topBottom){
-					//	endGame();
+						endGame();
 					} else if(colPoint.y >= bottomTop && colPoint.y <= bottomBottom){ //Bottom pipe
 						endGame();
 					}
@@ -302,10 +298,42 @@ function render(){
 		//(1) Draw background
 		canvasCtx.drawImage(assetMap["background"], 0, 0);
 		
-		//(2) Draw moving tiles
-		//TODO
+		//(2) Draw moving tiles, desserts, and case overlay
+		var tileAsset = assetMap["tiles"];
+		var blockOneX = (x / 1) % 160;
+		var blockTwoX = blockOneX + 160;
+		blockOneX -= 160;
+		blockTwoX -= 160;
+		blockOneX = -blockOneX;
+		blockTwoX = -blockTwoX;
+		canvasCtx.drawImage(tileAsset, Math.floor(blockOneX), 220);
+		canvasCtx.drawImage(tileAsset, Math.floor(blockTwoX), 220);
 		
-		//(3) Draw "pipes"
+		var donutAsset = assetMap["donut_shelf"];
+		var cakeAsset = assetMap["cake_shelf"];
+		var overlayAsset = assetMap["case_overlay"];
+		
+		blockOneX = (x / 2) % 160;
+		blockTwoX = blockOneX + 160;
+		blockOneX -= 160;
+		blockTwoX -= 160;
+		blockOneX = -blockOneX;
+		blockTwoX = -blockTwoX;
+		canvasCtx.drawImage(donutAsset, Math.floor(blockOneX), 200);
+		canvasCtx.drawImage(donutAsset, Math.floor(blockTwoX), 200);
+		
+		blockOneX = (x / 3) % 160;
+		blockTwoX = blockOneX + 160;
+		blockOneX -= 160;
+		blockTwoX -= 160;
+		blockOneX = -blockOneX;
+		blockTwoX = -blockTwoX;
+		canvasCtx.drawImage(cakeAsset, Math.floor(blockOneX), 180);
+		canvasCtx.drawImage(cakeAsset, Math.floor(blockTwoX), 180);
+		
+		canvasCtx.drawImage(overlayAsset, 0, 180);
+		
+		//(3) Draw "pipes" 
 		for(var i = 0; i < pipes.length; i++){
 			var pipe = pipes[i];
 			var units = pipe.units;
@@ -313,7 +341,6 @@ function render(){
 			
 			for(var j = 0; j < units.length; j++){
 				var unit = units[j];
-				//canvasCtx.drawImage(asset, pipe.x, unit.y, PIPE_WIDTH, unit.height);
 				canvasCtx.drawImage(asset, 0, 0, 35, unit.height, pipe.x, unit.y, PIPE_WIDTH, unit.height);
 			}
 		}
@@ -322,52 +349,6 @@ function render(){
 		var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
 		var moduleSprite = assetMap["player" + moduleSpriteIndex];
 		canvasCtx.drawImage(moduleSprite, (CANVAS_WIDTH / 4) - (moduleInfo.width / 2), y);
-		
-		var cUnits = [];
-		
-		cUnits.push({
-			"x": (CANVAS_WIDTH / 4) -(moduleInfo.width / 2) + moduleInfo.p1.x,
-			"y": y + moduleInfo.p1.y
-		});
-		cUnits.push({
-			"x": (CANVAS_WIDTH / 4)- (moduleInfo.width / 2) + moduleInfo.p2.x,
-			"y": y + moduleInfo.p2.y
-		});
-		
-		for(var i = 0; i < cUnits.length; i++){
-			var cUnit = cUnits[i];
-			canvasCtx.fillRect(cUnit.x, cUnit.y, 2, 2);
-		}
-		
-		for(var j = 0; j < pipes.length; j++){
-			var pipe = pipes[j];
-			
-			var topTop = 0;
-			var topBottom = pipe.center - (pipe.height / 2);
-			var topLeft = pipe.x;
-			var topRight = pipe.x + PIPE_WIDTH;
-			
-			canvasCtx.fillRect(topLeft, topTop, 2, 2);
-			canvasCtx.fillRect(topLeft, topBottom, 2, 2);
-			canvasCtx.fillRect(topRight, topTop, 2, 2);
-			canvasCtx.fillRect(topRight, topBottom, 2, 2);
-
-			
-			//console.log(topTop + " " + topBottom + " " + topLeft + " " + topRight); 	
-			
-			var bottomTop = pipe.center + (pipe.height / 2);
-			var bottomBottom = 170;
-			
-			canvasCtx.fillRect(topLeft, bottomTop, 2, 2);
-			canvasCtx.fillRect(topLeft, bottomBottom, 2, 2);
-			canvasCtx.fillRect(topRight, bottomTop, 2, 2);
-			canvasCtx.fillRect(topRight, bottomBottom, 2, 2);
-			
-			//console.log(bottomTop + " " + bottomBottom);
-			
-			
-		}
-		
 		
 		//(5) Draw scoreboard
 		canvasCtx.drawImage(assetMap["scoreboard"], (FIELD_WIDTH / 2) - 15, 5);
@@ -408,7 +389,8 @@ function endGame(){
 var canvas;
 var canvasCtx;
 var assetList = [ "title", "scoreboard", "background", "play", "player1", 
-	"player2", "player3", "player4", "donut_1" ];
+				  "player2", "player3", "player4", "donut_1", "restart", 
+				  "tiles", "donut_shelf", "cake_shelf", "case_overlay" ];
 var assetMap = {}; //String -> element
 
 function loadAssets(){
