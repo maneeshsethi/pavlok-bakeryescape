@@ -74,7 +74,7 @@ pg.connect(process.env.DATABASE_URL, function(err, cli){
 		console.log("Connected to Postgres!");
 		client = cli;
 		setupQuery("CREATE TABLE IF NOT EXISTS Users (uid TEXT NOT NULL, token TEXT, PRIMARY KEY (uid))", [], function(){});
-		setupQuery("CREATE TABLE IF NOT EXISTS Sessions (uid TEXT NOT NULL, session_id TEXT NOT NULL, PRIMARY KEY (uid))", [], function(){});
+		setupQuery("CREATE TABLE IF NOT EXISTS Session (uid TEXT NOT NULL, session_id TEXT NOT NULL, PRIMARY KEY (uid))", [], function(){});
 	}
 });
 
