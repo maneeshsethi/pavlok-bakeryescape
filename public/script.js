@@ -433,6 +433,19 @@ function loadAssets(){
 	}
 }
 
+function setupButtons(easy, normal, hard){
+	$("#easy-btn" ).prop( "disabled", easy);
+	$("#normal-btn" ).prop( "disabled", normal);
+	$("#hard-btn" ).prop( "disabled", hard);
+	
+	if(easy)
+		X_MOVEMENT = 0.65;
+	if(normal)
+		X_MOVEMENT = 0.85;
+	if(hard)
+		X_MOVEMENT = 1;
+}
+
 $(document).ready(function(){
 	console.log("onReady!");
 	
@@ -490,8 +503,22 @@ $(document).ready(function(){
 	//Hide/show depending on whether there's valid stuff
 	//Could be done in Nunjucks, but I forgot how
 	if(pavCtx.code == "none"){
+		$("#login").show();
 		$("#logged-in").hide();
 	} else {
+		$("#logged-in").show();
 		$("#login").hide();
 	}
+	
+	//Difficulty buttons
+	setupButtons(false, true, false);
+	$("#easy-btn").click(function(){
+		setupButtons(true, false, false);
+	});
+	$("#normal-btn").click(function(){
+		setupButtons(false, true, false);
+	});
+	$("#hard-btn").click(function(){
+		setupButtons(false, false, true);
+	});
 });

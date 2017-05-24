@@ -112,7 +112,8 @@ function establishSession(req, res, meResponse){
 							req.pavuser = { 
 								code: req.session.pavlok_token	
 							};
-							serveGame(req, res);
+							res.redirect("/");
+							//serveGame(req, res);
 						}
 					});
 			}
