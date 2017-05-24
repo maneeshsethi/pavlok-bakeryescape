@@ -449,16 +449,22 @@ function setupButtons(easy, normal, hard){
 		X_MOVEMENT = 0.55;
 		PIPE_HEIGHT_BASE = 72;
 		PIPE_HEIGHT_VARIABILITY = 6;
+		ACCEL = 50;
+		Y_INST_VELOCITY = -70;
 	}
 	if(normal){
 		X_MOVEMENT = 0.90;
 		PIPE_HEIGHT_BASE = 67;
 		PIPE_HEIGHT_VARIABILITY = 13;
+		ACCEL = 50;
+		Y_INST_VELOCITY = -70;
 	}
 	if(hard){
 		X_MOVEMENT = 1.20;
 		PIPE_HEIGHT_BASE = 55;
 		PIPE_HEIGHT_VARIABILITY = 10;
+		ACCEL = 60;
+		Y_INST_VELOCITY = -80; //More of a jump boost
 	}
 }
 
