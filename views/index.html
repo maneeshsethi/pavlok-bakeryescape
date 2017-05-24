@@ -28,6 +28,12 @@
 		<div id="title">
 			Pavlok Presents: Zappy Bird's Bakery Escape
 		</div>
+		
+		<div style="font-size: 1em;">
+			<button id="easy-btn">Easy</button>
+			<button id="normal-btn">Normal</button>
+			<button id="hard-btn">Tough</button>
+		</div>
 	
 		<div id="canvas-container">
 			<canvas width="160" height="240" id="cv">
@@ -36,22 +42,13 @@
 		</div>
 		
 		<div id="login-container">		
-			<div style="font-size: 1em; margin-bottom: 0.25em;">
-				<button id="easy-btn">Easy</button>
-				<button id="normal-btn">Normal</button>
-				<button id="hard-btn">Tough</button>
-			</div>
-		
-			<div id="logged-in">
-				<div>
-					You're logged in - get ready for fun!
-				</div>
-				<div style="font-size: 1em;">
+			<div id="login-block">
+				<div id="logged-in">
 					<a href="/logout">Logout</a>
 				</div>
-			</div>
-			<div id="login">
-				<a href="/login">Login with Pavlok</a>
+				<div id="login">
+					<a href="/login">Login with Pavlok</a>
+				</div>
 			</div>
 		
 			<div style="font-size: 0.65em; margin-bottom: 0.2em; margin-top: 0.5em;">

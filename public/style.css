@@ -1,8 +1,9 @@
 /* See this fiddle for scaling details http://jsfiddle.net/namuol/VAXrL/1459/ */
 #title {    
 	margin-top: 1.25em;
+	margin-bottom: 0.25em;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
 	font-family: monospace;
 	color: white;
 }
@@ -20,18 +21,18 @@
     margin-left: 1em;
 }
 
-#login {
+#login-block {
 	display: block;
     margin: 0 auto;
     padding: 0.2em;
-    background: yellow;
+    background: #ffcd00;
     max-width: 200px;
     text-align: center;
     color: black;
     border-radius: 0.5em;
 }
 
-#login a {
+#login-block a {
 	text-decoration: none;
     color: black;
 }
