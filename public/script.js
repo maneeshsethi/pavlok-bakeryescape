@@ -170,6 +170,9 @@ function step(){
 			if(onStartScreen || onGameOverScreen){ //Restart the game
 				console.log("Starting game...");
 				startGame();
+				if(onStartScreen){
+					if(pavCtx.code != "none") pavlok.beep(20, "Good luck!");
+				}
 			} 
 		}
 		pendingMouseEvent = false;
@@ -372,7 +375,7 @@ function render(){
 		canvasCtx.drawImage(assetMap["scoreboard"], (FIELD_WIDTH / 2) - 15, 5);
 		
 		//(6) Draw score
-		canvasCtx.fillText(score + "", (FIELD_WIDTH / 2), 29);
+		canvasCtx.fillText(score + "", (FIELD_WIDTH / 2), 28);
 	}
 	
 	if(onGameOverScreen){
@@ -422,7 +425,7 @@ var assetMap = {}; //String -> element
 function loadAssets(){
 	canvas = $("#cv").get(0);
 	canvasCtx = canvas.getContext("2d");
-	canvasCtx.font = "18px Orbitron";
+	canvasCtx.font = "16px Orbitron";
 	canvasCtx.fillStyle = "red";
 	canvasCtx.textAlign = "center";
 	for(var i = 0; i < assetList.length; i++){
