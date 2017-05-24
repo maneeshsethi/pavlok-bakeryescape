@@ -161,10 +161,12 @@ function step(){
 		console.log("Processing pending mouse event...");
 		
 		if(lastMouseEventDown){ //Pending event is a MOUSE_DOWN
+			console.log("Last event was down");
 			if(onPlayScreen){
 				queueJump();
 			}
 		} else { //Pending event is a MOUSE_UP
+			console.log("last event was an up");
 			if(onStartScreen || onGameOverScreen){ //Restart the game
 				console.log("Starting game...");
 				startGame();
