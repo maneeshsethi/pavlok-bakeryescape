@@ -382,7 +382,7 @@ function render(){
 	}
 	
 	if(onGameOverScreen){
-		var timeSinceDeath = (gameEndTime - new Date()) / 1000;
+		var timeSinceDeath = (new Date() - gameEndTime) / 1000;
 		if(timeSinceDeath < 3){ //Draw flash (yes, this is overdraw; whatevs)
 			var useBlack = Math.sin(timeSinceDeath * 30) > 0; //Display ~15 flashes in the time
 			if(useBlack){
