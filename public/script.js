@@ -272,9 +272,9 @@ function step(){
 				score += 1;
 				pipe.scored = true;
 				
-				if(score % 5 == 0){
+				//if(score % 5 == 0){
 					if(pavCtx.code != null) pavlok.vibrate(20, "Keep up the good playing!");
-				}
+				//}
 			}
 		}
 	}
