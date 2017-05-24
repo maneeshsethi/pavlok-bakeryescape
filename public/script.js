@@ -422,7 +422,7 @@ var assetMap = {}; //String -> element
 function loadAssets(){
 	canvas = $("#cv").get(0);
 	canvasCtx = canvas.getContext("2d");
-	canvasCtx.font = "18px ledFont";
+	canvasCtx.font = "18px Orbitron";
 	canvasCtx.fillStyle = "red";
 	canvasCtx.textAlign = "center";
 	for(var i = 0; i < assetList.length; i++){
