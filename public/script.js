@@ -401,7 +401,7 @@ function render(){
 			canvasCtx.drawImage(moduleSprite, moduleX, moduleY);
 		} else { //We're on the "game over screen", so draw a chubby Pavlok on the counter instead
 			var chubbySprite = assetMap["chubby_pavlok"];
-			canvasCtx.drawImage(chubbySprite, 35, 138);
+			canvasCtx.drawImage(chubbySprite, 15, 138);
 		}
 		
 		//(5) Draw scoreboard

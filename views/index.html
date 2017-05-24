@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Pavlok Presents: Bakery Escape</title>
+		<title>Pavlok Presents: Zappy Bird's Bakery Escape</title>
 		
 		<!-- Custom CS/Javascript -->
 		<link rel="stylesheet" href="/style.css">
@@ -25,31 +25,46 @@
 		<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet"> <!-- Scoreboard font -->
 	</head>
 	<body>
+		<div id="title">
+			Pavlok Presents: Zappy Bird's Bakery Escape
+		</div>
+	
 		<div id="canvas-container">
 			<canvas width="160" height="240" id="cv">
 				Your browser doesn't support Canvas for games :(
 			</canvas>
 		</div>
 		
-		
-		
 		<div id="login-container">		
 			<div style="font-size: 1em; margin-bottom: 0.25em;">
-				<button id="easy-btn">easy</button>
-				<button id="normal-btn">normal</button>
-				<button id="hard-btn">tough</button>
+				<button id="easy-btn">Easy</button>
+				<button id="normal-btn">Normal</button>
+				<button id="hard-btn">Tough</button>
 			</div>
 		
 			<div id="logged-in">
 				<div>
-					you're logged in - get ready for fun!
+					You're logged in - get ready for fun!
 				</div>
 				<div style="font-size: 1em;">
-					<a href="/logout">i'm no fun</a>
+					<a href="/logout">Logout</a>
 				</div>
 			</div>
 			<div id="login">
-				<a href="/login">login to experience the game with pavlok!</a>
+				<a href="/login">Login with Pavlok</a>
+			</div>
+		
+			<div style="font-size: 0.65em; margin-bottom: 0.2em;">
+				Zappy bird has gotten a little chubby, and he needs your help to change his habit! Help Zappy Bird escape from the circular minions from evil Donut Nation.
+
+				How to play: 
+				<ul style="list-style-position: inside;">
+					<li>Click on Zappy Bird to help him fly! (Or use the spacebar.)</li>
+					<li>Avoid the (tempting) donuts!</li>
+					<li>Got a <a href="https://www.pavlok.com">Pavlok</a>? Login with your Pavlok account, and you'll get to feel what Zappy Bird is feeling.</li>
+				</ul>
+
+				Feel vibrations as you earn points, but be careful---you'll get zapped if you crash!
 			</div>
 		</div>
 		
