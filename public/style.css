@@ -1,12 +1,9 @@
 /* See this fiddle for scaling details http://jsfiddle.net/namuol/VAXrL/1459/ */
-@font-face {
-	font-family: ledFont;
-	src: url(fonts/ledfont.tff);
-}
-
-#title {
-	text-align: center;
-	font-size: 1.25em;
+#title {    
+	margin-top: 1.25em;
+    text-align: center;
+    font-size: 1.5em;
+	font-family: monospace;
 }
 
 #canvas-container {
@@ -14,10 +11,12 @@
 }
 
 #login-container {
-	margin-top: 0.2rem;
 	font-size: 1.5em;
 	color: white;
 	text-align: center;
+	font-family: sans-serif;
+	margin-right: 1em;
+    margin-left: 1em;
 }
 
 #cv {
