@@ -439,12 +439,12 @@ $(document).ready(function(){
 	canvas.onmousedown = function(){
 		pendingMouseEvent = true;
 		lastMouseEventDown = true;
-		//console.log("onMouseDown");
+		console.log("onMouseDown");
 	};
 	canvas.onmouseup = function(){
 		pendingMouseEvent = true;
 		lastMouseEventDown = false;
-		//console.log("onMouseUp");
+		console.log("onMouseUp");
 	};
 	
 	//Hide/show depending on whether there's valid stuff
