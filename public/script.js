@@ -168,11 +168,11 @@ function step(){
 		} else { //Pending event is a MOUSE_UP
 			console.log("last event was an up");
 			if(onStartScreen || onGameOverScreen){ //Restart the game
+				if(onGameOverScreen){
+					if(pavCtx.code != "none") pavlok.beep(50, "Good luck!");
+				}
 				console.log("Starting game...");
 				startGame();
-				if(onStartScreen){
-					if(pavCtx.code != "none") pavlok.beep(20, "Good luck!");
-				}
 			} 
 		}
 		pendingMouseEvent = false;
@@ -444,11 +444,11 @@ function setupButtons(easy, normal, hard){
 	$("#hard-btn" ).prop( "disabled", hard);
 	
 	if(easy)
-		X_MOVEMENT = 0.65;
+		X_MOVEMENT = 0.55;
 	if(normal)
-		X_MOVEMENT = 0.85;
+		X_MOVEMENT = 0.90;
 	if(hard)
-		X_MOVEMENT = 1.10;
+		X_MOVEMENT = 1.25;
 }
 
 var spaceDown = false;
