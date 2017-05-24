@@ -1,5 +1,7 @@
 var ACCEL = 50;
 var X_MOVEMENT = 0.85;
+var PIPE_HEIGHT_BASE = 65;
+var PIPE_HEIGHT_VARIABILITY = 10;
 var Y_INST_VELOCITY = -70;
 var CANVAS_WIDTH = 160;
 var CANVAS_HEIGHT = 240;
@@ -94,7 +96,7 @@ function rand(){
 
 function buildPipe(){
 	var center = (FIELD_HEIGHT / 2) + (rand() * 35); //Centered from  50-120 
-	var pipeHeight = 67 + (rand() * 13); //54-80 pixels of space
+	var pipeHeight = PIPE_HEIGHT_BASE + (rand() * PIPE_HEIGHT_VARIABILITY); //54-80 pixels of space
 		
 	//"units" specifies what should be rendered in terms of:
 	// {
@@ -443,12 +445,21 @@ function setupButtons(easy, normal, hard){
 	$("#normal-btn" ).prop( "disabled", normal);
 	$("#hard-btn" ).prop( "disabled", hard);
 	
-	if(easy)
+	if(easy){
 		X_MOVEMENT = 0.55;
-	if(normal)
+		PIPE_HEIGHT_BASE = 72;
+		PIPE_HEIGHT_VARIABILITY = 6;
+	}
+	if(normal){
 		X_MOVEMENT = 0.90;
-	if(hard)
-		X_MOVEMENT = 1.25;
+		PIPE_HEIGHT_BASE = 67;
+		PIPE_HEIGHT_VARIABILITY = 13;
+	}
+	if(hard){
+		X_MOVEMENT = 1.20;
+		PIPE_HEIGHT_BASE = 55;
+		PIPE_HEIGHT_VARIABILITY = 10;
+	}
 }
 
 var spaceDown = false;
