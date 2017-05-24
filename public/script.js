@@ -369,13 +369,14 @@ function render(){
 			var moduleInfo = MODULE_COLLISION_MAP["player" + moduleSpriteIndex];
 			var moduleSprite = assetMap["player" + moduleSpriteIndex];
 			
-			var mX = Math.floor((CANVAS_WIDTH / 4) - (moduleInfo.width / 2));
-			var mY = Math.floor(y);
-			canvasCtx.drawImage(moduleSprite, mX, mY);
+			var moduleX = Math.floor((CANVAS_WIDTH / 4) - (moduleInfo.width / 2));
+			var moduleY = Math.floor(y);
+			var mX = moduleX;
+			var mY = moduleY;
 			
 			//Draw trail
 			//Animation, so we choose from trail1 and trail2
-			var trailChoice = Math.sin((new Date() - gameStartTime) / 1000 * 30) > 1 ? 1 : 2;
+			var trailChoice = Math.sin((new Date() - gameStartTime) / 1000 * 30) > 0 ? 1 : 2;
 			var trailSprite = assetMap["trail" + trailChoice];		
 			switch(moduleSpriteIndex){
 				case 1:
@@ -383,8 +384,8 @@ function render(){
 				mY += 5;
 				break;
 				case 2:
-				mX -= 6;
-				mY -= 5;
+				mX -= 7;
+				mY += 2;
 				break;
 				case 3:
 				mX -= 6;
@@ -395,7 +396,9 @@ function render(){
 				y -= 10;
 				break;
 			}
+			
 			canvasCtx.drawImage(trailSprite, mX, mY);
+			canvasCtx.drawImage(moduleSprite, moduleX, moduleY);
 		} else { //We're on the "game over screen", so draw a chubby Pavlok instead
 			var chubbySprite = assetMap["chubby_pavlok"];
 			canvasCtx.drawImage(chubbySprite, Math.floor(cPX - 17), Math.floor(cPY - 23));
