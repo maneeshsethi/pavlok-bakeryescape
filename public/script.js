@@ -156,7 +156,7 @@ function buildPipe(){
 function step(){
 	//(1) Handle any new input
 	if(pendingMouseEvent){
-		//console.log("Processing pending mouse event...");
+		console.log("Processing pending mouse event...");
 		
 		if(lastMouseEventDown){ //Pending event is a MOUSE_DOWN
 			if(onPlayScreen){
@@ -273,7 +273,7 @@ function step(){
 				pipe.scored = true;
 				
 				if(score % 5 == 0){
-					if(pavCtx.code != null) pavlok.vibrate(20, "Keep up the good playing!");
+					if(pavCtx.code != "none") pavlok.vibrate(60, "Keep up the good playing!");
 				}
 			}
 		}
@@ -398,7 +398,7 @@ function startGame(){
 function endGame(){
 	console.log("Game over!");
 	
-	if(pavCtx.code != null) pavlok.zap(35, "Better luck next time!");
+	if(pavCtx.code != "none") pavlok.zap(35, "Better luck next time!");
 	
 	onStartScreen = false;
 	onPlayScreen = false;
