@@ -36,6 +36,15 @@ app.use(function(req, res, next){
 		pavlok.auth(req, res); //Begin an authentication process
 		return;
 	}
+	
+	if(req.url == "/logout"){
+		if(pavlok.isLoggedIn(req)){
+			pavlok.logout(req);
+			req.session.sid = null;
+			res.send("laaaaame (but you're logged out)");
+		}
+		return;
+	}
 
 	//Perform user lookup for the / route and the /context.js route to let 
 	//these routes populate themselves as needed with user information, or redirect
