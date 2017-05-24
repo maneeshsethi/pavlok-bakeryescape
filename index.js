@@ -87,7 +87,7 @@ function establishSession(req, res, meResponse){
 			if(error){
 				res.status(500).send("Could not delete old sessions!");
 			} else {
-				setupQuery("INSERT INTO Sessions (uid, session_id) VALUES ($1, $2)",
+				setupQuery("INSERT INTO Session (uid, session_id) VALUES ($1, $2)",
 					[meResponse.uid, sid],
 					function(error, rows){
 						if(error){
