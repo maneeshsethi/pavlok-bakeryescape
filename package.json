@@ -1,5 +1,5 @@
 {
-  "name": "Bakery Escape",
+  "name": "bakery_escape",
   "version": "0.0.1",
   "description": "Game for your Pavlok.",
   "main": "index.js",
