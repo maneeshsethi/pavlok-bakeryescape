@@ -271,6 +271,10 @@ function step(){
 			if(!pipe.scored && (((CANVAS_WIDTH / 4) + moduleInfo.p1.x) > (pipe.x + (PIPE_WIDTH / 2)))){
 				score += 1;
 				pipe.scored = true;
+				
+				if(score % 5 == 0){
+					if(pavCtx.code != null) pavlok.vibrate(20, "Keep up the good playing!");
+				}
 			}
 		}
 	}
@@ -393,6 +397,8 @@ function startGame(){
 
 function endGame(){
 	console.log("Game over!");
+	
+	if(pavCtx.code != null) pavlok.zap(35, "Better luck next time!");
 	
 	onStartScreen = false;
 	onPlayScreen = false;
