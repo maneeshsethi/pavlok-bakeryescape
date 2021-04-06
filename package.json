@@ -17,14 +17,10 @@
     "url": "https://github.com/Behavioral-Technology-Group/bakery-escape/issues"
   },
   "homepage": "https://github.com/Behavioral-Technology-Group/bakery-escape#readme",
-"engines": {
-  "name": "Pavlok Bakery Escape",
-  "description": "a really cool app",
-  "version": "1.0.0",
-  "engines": {
-    "node": "14.x"
-  }
-},
+    "engines": {
+      "node": "14.x"
+    }
+  },
   "dependencies": {
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.1",
