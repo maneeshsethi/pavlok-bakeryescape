@@ -19,8 +19,7 @@
   "homepage": "https://github.com/Behavioral-Technology-Group/bakery-escape#readme",
     "engines": {
       "node": "14.x"
-    }
-  },
+    },
   "dependencies": {
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.1",

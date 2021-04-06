@@ -34,3 +34,5 @@ node_modules
 
 # Swap files
 *.swp
+.github/.DS_Store
+.DS_Store
